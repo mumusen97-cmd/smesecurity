@@ -1,6 +1,6 @@
 # OWASP-Aligned SME Security Assessment Platform (MVP)
 
-This repository contains a working MVP backend for your MIS5203 project.
+This repository contains a working MVP backend for the MIS5203 project.
 
 ## Implemented Technical Work
 
@@ -42,7 +42,7 @@ Then call scan endpoint with `engine=zap`:
 curl -X POST "http://127.0.0.1:8000/scans?engine=zap&fallback_to_simulated=false" -H "Content-Type: application/json" -H "X-Role: admin" -d "{\"target_url\":\"https://example.com\"}"
 ```
 
-If you want classroom demo mode without a running ZAP daemon, use `engine=simulated`.
+To run classroom demo mode without a running ZAP daemon, use `engine=simulated`.
 
 ## Run Tests
 
@@ -56,3 +56,4 @@ pytest -q
 - `GET /scans/{scan_id}` -> get scan summary (`admin`, `analyst`, `auditor`)
 - `GET /reports/{scan_id}` -> get report (`admin`, `auditor`)
 - `GET /audit` -> read audit trail (`admin`)
+
