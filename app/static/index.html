@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OWASP SME Security Platform</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">MIS5203 Project MVP</p>
+      <h1>SME Security Assessment Platform</h1>
+      <p class="lede">Passkey sign-in, OWASP ZAP scanning, risk scoring, and compliance mapping in one interface for SME owners, IT staff, and auditors.</p>
+    </section>
+
+    <section class="grid two-up">
+      <article class="panel">
+        <h2>Register Passkey</h2>
+        <label>Username<input id="register-username" placeholder="owner@acme.local"></label>
+        <label>Display Name<input id="register-display-name" placeholder="Acme Owner"></label>
+        <label>Role
+          <select id="register-role">
+            <option value="admin">SME Owner / Admin</option>
+            <option value="analyst">IT Staff / Analyst</option>
+            <option value="auditor">Auditor</option>
+          </select>
+        </label>
+        <button id="register-button">Create Passkey</button>
+      </article>
+
+      <article class="panel">
+        <h2>Login with Passkey</h2>
+        <label>Username<input id="login-username" placeholder="owner@acme.local"></label>
+        <button id="login-button">Sign In</button>
+        <div class="session-card">
+          <p><strong>Signed in as:</strong> <span id="profile-name">Not signed in</span></p>
+          <p><strong>Role:</strong> <span id="profile-role">-</span></p>
+          <p><strong>Auth Method:</strong> <span id="profile-method">-</span></p>
+        </div>
+      </article>
+    </section>
+
+    <section class="grid two-up">
+      <article class="panel">
+        <h2>Run Vulnerability Scan</h2>
+        <label>Target URL<input id="scan-target" placeholder="https://example.com"></label>
+        <label>Engine
+          <select id="scan-engine">
+            <option value="zap">OWASP ZAP</option>
+            <option value="simulated">Simulated Demo</option>
+          </select>
+        </label>
+        <label class="checkbox-row"><input id="scan-fallback" type="checkbox" checked> Allow simulated fallback if ZAP is offline</label>
+        <button id="scan-button">Start Scan</button>
+        <pre id="scan-output" class="output"></pre>
+      </article>
+
+      <article class="panel">
+        <h2>Reports & Audit</h2>
+        <label>Scan ID<input id="report-scan-id" placeholder="Paste scan ID"></label>
+        <div class="button-row">
+          <button id="report-button">Load Report</button>
+          <button id="audit-button">Load Audit Log</button>
+        </div>
+        <pre id="report-output" class="output"></pre>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>How Roles Map to Users</h2>
+      <div class="role-grid">
+        <div>
+          <h3>SME Owner</h3>
+          <p>Uses the <strong>admin</strong> role to register passkeys, run scans, download reports, and review audit activity.</p>
+        </div>
+        <div>
+          <h3>IT Staff</h3>
+          <p>Uses the <strong>analyst</strong> role to run scans and review technical findings with risk scores and mapped controls.</p>
+        </div>
+        <div>
+          <h3>Auditor</h3>
+          <p>Uses the <strong>auditor</strong> role to access formal reports and verify governance evidence.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel status-panel">
+      <h2>Status</h2>
+      <p id="status-line">Ready.</p>
+    </section>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>

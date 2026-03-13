@@ -11,6 +11,7 @@ class ZapIntegrationError(Exception):
     pass
 
 
+#read zap url from env so we can change port without editing code
 def _zap_base_url() -> str:
     return os.getenv("ZAP_BASE_URL", "http://127.0.0.1:8080").rstrip("/")
 
@@ -35,6 +36,7 @@ def _request(client: httpx.Client, path: str, params: dict[str, Any]) -> dict[st
     return response.json()
 
 
+#kicks off a scan phase and polls until it hits 100 percent or times out
 def _poll_status(
     client: httpx.Client,
     start_path: str,
@@ -59,10 +61,12 @@ def _poll_status(
     raise ZapIntegrationError(f"ZAP scan timed out for target: {target_url}")
 
 
+#runs a full zap scan - spider first then active scan then fetch alerts
 def run_zap_scan(target_url: str) -> list[RawFinding]:
     timeout_seconds = _client_timeout()
     try:
         with httpx.Client(timeout=timeout_seconds) as client:
+            #spider crawls links first
             _poll_status(
                 client=client,
                 start_path="/JSON/spider/action/scan/",
@@ -73,6 +77,7 @@ def run_zap_scan(target_url: str) -> list[RawFinding]:
                 timeout_seconds=timeout_seconds,
             )
 
+            #active scan actually tests the vulnerabilities
             _poll_status(
                 client=client,
                 start_path="/JSON/ascan/action/scan/",
@@ -83,6 +88,7 @@ def run_zap_scan(target_url: str) -> list[RawFinding]:
                 timeout_seconds=timeout_seconds,
             )
 
+            #pull all alerts zap found and convert to our model
             alerts = _request(
                 client,
                 "/JSON/core/view/alerts/",
